@@ -1,0 +1,27 @@
+name: Daily Telegram Bot
+
+on:
+  schedule:
+    # Runs at 9:00 AM UTC every day
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  send-rate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+    
+    - name: Run send_rate.php
+      run: php send_rate.php
+      env:
+        # Add your Telegram bot token and chat ID as secrets
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
